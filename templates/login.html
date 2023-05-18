@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" type='text/css' href="{% static 'css/style-nav.css' %}">
+		<link rel="stylesheet" type='text/css' href="{% static 'css/style-slide.css'%}">
+		<link rel="stylesheet" type='text/css' href="{% static 'css/style.css'%}">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+		<title>Create Page</title>
+	</head>
+	<body>
+		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+	    <section class="top-nav">
+		    <div class="logo">
+		      <img src="{% static 'images/logo.png' %}">
+		    </div>
+		    <input id="menu-toggle" type="checkbox" />
+		    <label class='menu-button-container' for="menu-toggle">
+		    <div class='menu-button'></div>
+		  </label>
+		    <ul class="menu">
+		      <a class="item" href="/">Home</a>
+		      <a class="item" href="/create">Save</a>
+		      <a class="item" href="/login">Account</a>
+		    </ul>
+		</section>
+		<form method="post">
+		  {% csrf_token %}
+		  <div class="container">
+		    <div class="row">
+		      <div class="col-md-4 offset-md-4 login-form">
+		        <h2 class="form-heading">Login</h2>
+		        <form>
+		          <div class="form-group">
+		            <label class="form-label" for="username">Username:</label>
+		            <input type="text" class="form-control" id="username" name="username" required>
+		          </div>
+		          <div class="form-group">
+		            <label class="form-label" for="password">Password:</label>
+		            <input type="password" class="form-control" id="password" name="password" required>
+		          </div>
+		         
+		          <p>Don't have an account? <a href="register">Register here</a></p>
+		          <button type="submit" class="border border-dark btn btn-login btn-block">Login</button>
+		        </form>
+		      </div>
+		    </div>
+		  </div>
+		</form>
+	</body>
+</html>

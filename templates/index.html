@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" type='text/css' href="{% static 'css/style-nav.css' %}">
+		<link rel="stylesheet" type='text/css' href="{% static 'css/style-slide.css'%}">
+		<link rel="stylesheet" type='text/css' href="{% static 'css/style.css'%}">
+		<script src="{% static 'javascript/slideshow.js' %}"></script>
+
+		<title>Main Page</title>
+	</head>
+	<body>
+	    <section class="top-nav">
+		    <div class="logo">
+		      <img src="{% static 'images/logo.png' %}">
+		    </div>
+		    <input id="menu-toggle" type="checkbox" />
+		    <label class='menu-button-container' for="menu-toggle">
+		    <div class='menu-button'></div>
+		  </label>
+		    <ul class="menu">
+		      <a class="item" href="/">Home</a>
+		      <a class="item" href="/create">Save</a>
+		      <a class="item" href="/login">Account</a>
+		    </ul>
+		  </section>
+		  	<div class="content">
+				<h1>FAQ</h1>
+				<h2>What is Inboxio ?</h2>
+				<p>Inboxio is a file saving website that compresses your files and stores them in a best quality as possible.</p>
+				<br>
+				<h2>Why was Inboxio made ?</h2>
+				<p>Inboxio was made as a hackathon project for <a href="https://sch2023.devpost.com/?ref_feature=challenge&ref_medium=your-open-hackathons&ref_content=Submissions+open" target="_blank">Steel City Hacks 2023. </a></p>
+				<br>
+				<h2>What is the goal of this project ?</h2>
+				<p>The goal of this project is to provide a best file compression on the market. Another goal is to learn more about Web Development and File Compression.</p>
+			</div>
+	    <div class="slideshow-container">
+			<div class="mySlides fade" style="display: block;">
+			  <img src="{% static 'images/logo.png' %}">
+			</div>
+
+			<br>
+		</div>
+	 </body>
+</html>
