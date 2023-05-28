@@ -52,7 +52,7 @@ def get_files_in_folder(folder_path):
     return file_list
 
 def index(request):
-	return render(request, "index.html")
+    return render(request, "index.html")
 
 def create(request, **kwargs):
     if request.session.get('LOGGED', True):
@@ -78,21 +78,20 @@ def my_view(request, **kwargs):
         return redirect('login')
 
 def register(request):
-	if request.method == "POST":
-		username = request.POST.get('username')
-		password = request.POST.get('password')
+    if request.method == "POST":
+        username = request.POST.get('username')
+        password = request.POST.get('password')
 
-		user = User.objects.create(username=username, password=password)
-		user.save()
-
-		return redirect('login')
-	else:
-		return render(request, "register.html")
+        user = User.objects.create(username=username, password=password)
+        user.save()
+        os.mkdir(f"files/{username}")
+        return redirect('login')
+    else:
+        return render(request, "register.html")
 
 def logout_view(request):
     logout(request)
     return redirect('login')
-
 
 @csrf_protect
 def login_view(request):
