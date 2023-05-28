@@ -2,7 +2,9 @@
 
 Inboxio is a file saving website that compresses your files and stores them with the best quality possible. It provides an easy and efficient way to upload and store your files while reducing their size without compromising their quality. This README file provides an overview of Inboxio and guides you on how to get started.
 
-Website: http://inboxio.pythonanywhere.com/
+To run it you need: Django module and gzip.
+Install django: `pip install Django`
+Install gzip: `pip install gzip`
 
 ## Features
 
