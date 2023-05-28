@@ -26,13 +26,15 @@
 		  </label>
 		    <ul class="menu">
 		      <a class="item" href="/">Home</a>
-		      <a class="item" href="/create">Save</a>
+		      <a class="item" href="/upload">Upload</a>
 		      <a class="item" href="/login">Account</a>
 		    </ul>
 		</section>
 		<h3>User: {{username}}</h3>
-		<p>Date created: {{username.created_at}}</p>
-		<p>Files: {{ projects }}</p>
+		<p>Files:</p>
+		{% for file in files %}
+    		<a href="/{{ file.file_path }}" download="{{ file.name|slice:':-3' }}">{{ file.name }}</a><br>
+		{% endfor %}
 		<a href="{% url 'logout' %}">Log out</a>
 
 	</body>

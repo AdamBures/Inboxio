@@ -7,9 +7,109 @@
 		<link rel="stylesheet" type='text/css' href="{% static 'css/style-nav.css' %}">
 		<link rel="stylesheet" type='text/css' href="{% static 'css/style-slide.css'%}">
 		<link rel="stylesheet" type='text/css' href="{% static 'css/style.css'%}">
-		<script src="{% static 'javascript/main.js' %}"></script>
 
 		<title>Create Page</title>
+
+		<style>
+		    .drop-zone {
+		      height: calc(100vh - 50px);
+		      border: 2px dashed #ccc;
+		      text-align: center;
+		      padding: 10px;
+		      font-family: Arial, sans-serif;
+		      cursor: pointer;
+		    }
+		  </style>
+			<script>
+				function handleFileSelect(files, source) {
+				    for (var i = 0; i < files.length; i++) {
+				        var file = files[i];
+				        console.log('File Name: ' + file.name);
+				        console.log('File Size: ' + file.size + ' bytes');
+				        console.log('File Type: ' + file.type);
+				        console.log('Source: ' + source);
+				        console.log('---------------------------------');
+				    }
+				    handleUpload(files); // Submit the files using the handleUpload function
+				}
+
+				function handleDragOver(event) {
+				    event.stopPropagation();
+				    event.preventDefault();
+				    event.dataTransfer.dropEffect = 'copy'; // Set the drop effect to copy
+				}
+
+				document.addEventListener('DOMContentLoaded', function() {
+				    var dropZone = document.getElementById('dropZone');
+				    var fileInput = document.getElementById('file-input');
+
+				    dropZone.addEventListener('click', function() {
+				        fileInput.click(); // Trigger file input click
+				    });
+
+				    dropZone.addEventListener('dragover', handleDragOver);
+
+				    dropZone.addEventListener('drop', function(event) {
+				        event.stopPropagation();
+				        event.preventDefault();
+
+				        var files = event.dataTransfer.files; // Retrieve the dropped files
+				        if (files.length > 0) {
+				            handleFileSelect(files, 'Drag and Drop');
+				        } else {
+				            fileInput.click(); // Trigger file input click if no files are dropped
+				        }
+				    });
+
+				    fileInput.addEventListener('change', function(event) {
+				        var files = event.target.files; // Retrieve the file list from the input element
+				        handleFileSelect(files, 'File Dialog');
+				    });
+				});
+
+				function handleUpload(files) {
+				    var formData = new FormData();
+
+				    for (var i = 0; i < files.length; i++) {
+				        formData.append('myfile', files[i]);
+				    }
+
+				    fetch('/upload', {
+				        method: 'POST',
+				        headers: {
+				            'X-CSRFToken': getCookie('csrftoken')
+				        },
+				        body: formData
+				    })
+				        .then(response => {
+				            // Handle the response as needed
+				            console.log('Files uploaded successfully.');
+				        })
+				        .catch(error => {
+				            // Handle any errors that occurred during the request
+				            console.error('An error occurred during file upload:', error);
+				        });
+				}
+
+				function getCookie(name) {
+				    var cookieValue = null;
+				    if (document.cookie && document.cookie !== '') {
+				        var cookies = document.cookie.split(';');
+				        for (var i = 0; i < cookies.length; i++) {
+				            var cookie = cookies[i].trim();
+				            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+				                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+				                break;
+				            }
+				        }
+				    }
+				    return cookieValue;
+				}
+
+
+			</script>
+
+
 	</head>
 	<body>
 	    <section class="top-nav">
@@ -21,97 +121,19 @@
 		    <div class='menu-button'></div>
 		  </label>
 		    <ul class="menu">
-		      <a class="item" href="/">Domů</a>
-		      <a class="item" href="/create">Tvoř</a>
-		      <a class="item" href="/login">Účet</a>
-		      
+		      <a class="item" href="/">Home</a>
+		      <a class="item" href="/upload">Upload</a>
+		      <a class="item" href="/login">Account</a>
 		    </ul>
 		</section>
-		<div class="vertical-menu">
-			  <div class="container">
-			    <div class="row">
-			    		{% for component in components|slice:":3" %}
-							<div class="col">
-				            	<div id="{{ component.name }}Pic" > <img id="myImage-{{ component.name }}" src="{{ component.icon }}" alt="{{ component.name }}"></div>
-				        	</div>
-			    		{% endfor %}
-			    		<div class="col">
-			    			<nav role="navigation">
-								  <div id="menuToggle">
-								    <input type="checkbox" id="menu_check"/>
-								    
-								    <span></span>
-								    <span></span>
-								    <span></span>
-
-								    <ul id="menu" style="display: none;">
-								    	{% for component in components %}
-
-								            	<li id="{{ component.name }}Pic" > 
-								            			<img id="myImage-{{ component.name }}" src="{{ component.icon }}" alt="{{ component.name }}">
-								            	</li>
-							    		{% endfor %}
-								    </ul>
-								  </div>
-								</nav>
-			    		</div>
-						<div class="col">
-							<button id="btn" class="button button5">Save PY</button>
-				        </div>
-				        <div class="col">
-							<button id="btn_save_rpy" class="button button5">Save RPY</button>
-				        </div>
-				        <div class="col">
-				        	<input type="file" id="fileInput" accept=".rpy,application/x-rpy" style="display: none;">
-							<button id="btn_open" class="button button5">Open</button>
-				        </div>
-				    </div>
-				</div>
-		</div>
-		<div id="pins" class="pins" style="display: none;">
-			<center>
-				<label for="pin">Pin number:</label>
-				<input type="text" id="pin" name="pin" size="6"><br><br>
-				<p id="pin_error"></p>
-				<button id="pin_btn" class="button button5">Submit</button>
-			</center>
-		</div>
-		<div id="lcd_pins" class="pins" style="display: none;">
-			<center>
-				<label for="lcd_rs">Lcd_rs number:</label>
-				<input type="text" id="lcd_rs" name="lcd_rs" size="6"><br><br>
-
-				<label for="lcd_en">Lcd_en number:</label>
-				<input type="text" id="lcd_en" name="lcd_en" size="6"><br><br>
-
-				<label for="lcd_d4">Lcd_d4 number:</label>
-				<input type="text" id="lcd_d4" name="lcd_d4" size="6"><br><br>
-
-				<label for="lcd_d5">Lcd_d5 number:</label>
-				<input type="text" id="lcd_d5" name="lcd_d5" size="6"><br><br>
-
-				<label for="lcd_d6">Lcd_d6 number:</label>
-				<input type="text" id="lcd_d6" name="lcd_d6" size="6"><br><br>
-
-				<label for="lcd_d7">Lcd_d7 number:</label>
-				<input type="text" id="lcd_d7" name="lcd_d7" size="6"><br><br>
-
-				<label for="lcd_backlight">Lcd_backlight number:</label>
-				<input type="text" id="lcd_backlight" name="lcd_backlight" size="6"><br><br>
-
-				<label for="lcd_columns">Lcd_columns number:</label>
-				<input type="text" id="lcd_columns" name="lcd_columns" size="6"><br><br>
-
-				<label for="lcd_rows">Lcd_rows number:</label>
-				<input type="text" id="lcd_rows" name="lcd_rows" size="6"><br><br>
-
-				<label for="lcd_message">Message:</label>
-				<input type="text" id="lcd_message" name="lcd_message" size="6"><br><br>
-
-				<p id="pin_error"></p>
-				<button id="pin_btn2" class="button button5">Submit</button>
-			</center>
-		</div>
-		<div id="lstDiv"></div>
+		<center>
+			<form method="POST" enctype="multipart/form-data">
+			    {% csrf_token %}
+			    <div class="drop-zone" id="dropZone" onclick="openFileDialog()">
+			        <p>Click here to select a file</p>
+			    </div>
+			    <input type="file" id="file-input" name="myfile" style="display: none;">
+			</form>
+  		</center>
 	</body>
 </html>
